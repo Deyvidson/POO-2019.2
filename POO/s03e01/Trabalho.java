@@ -12,6 +12,9 @@ public class Trabalho{
 		arno.girar();
 		arno.pararDeGirar();
 		arno.aumentarVelocidade();
+		arno.aumentarVelocidade();
+		arno.aumentarVelocidade();
+		arno.aumentarVelocidade();
 		arno.diminuirVelocidade();
 		arno.desligar();
 	   }

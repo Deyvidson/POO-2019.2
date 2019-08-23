@@ -5,7 +5,6 @@ public class Ventilador{
 	int velocidade;
 	boolean estaGirando;
 	
-	
 	public void ligar () {
 		if(estaLigado==false){
 		System.out.println("Ligando o ventilador");
@@ -38,13 +37,18 @@ public class Ventilador{
 	}
 	void aumentarVelocidade (){
 		if(velocidade>=0 && velocidade<3){
-			System.out.println("Aumentando a velocidade");
+			System.out.println("Ventilador na velocidade " + velocidade);
 			velocidade += 1;
+		}if(velocidade>3){
+			System.out.println("Já está na velocidade máxima");
 		}
 	}
 	void diminuirVelocidade (){
 		if(velocidade<=3 && velocidade>0){
-			System.out.println("Diminuindo a velocidade");
+			System.out.println("Diminuindo a velocidade" + velocidade);
+			velocidade -= 1;
+		}if(velocidade < 0){
+			System.out.println("O ventilador já está parado");
 		}
 	}
 	
