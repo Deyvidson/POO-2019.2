@@ -1,0 +1,45 @@
+notebook:
+	atributos:
+		marca
+		cor
+		tamanho da tela
+		status de bateria
+	métodos:
+		carregar bateria
+		fazer pesquisas
+		jogar	
+		ligar/desligar
+carro:
+	atributos:
+		marca	
+		placa
+		capacidade do tanque
+		estar ligado/desligado
+	métodos:
+		encher o tanque
+		viajar
+		abrir as portas
+		acender os faróis
+viagem:
+	atributos:
+		local de destino
+		local de origem
+		preço da viagem
+		horário da viagem
+	métodos:
+		cancelar viagem
+		adiar viagem
+		mudar destino
+		
+aula:
+	atributo:
+		sala de aula
+		alunos
+		professor	
+		duração
+	métodos:
+		pedir silêncio
+		fazer chamada
+		dar aula
+		passar atividade
+		
