@@ -1,7 +1,7 @@
 import java.util.Scanner;
  class Cacatua{
 
-    int barriga = 0;
+    int barriga = 1;
     int maxBarriga = 5;
     int carinho = 0;
     int atencao = 5;
@@ -17,9 +17,9 @@ import java.util.Scanner;
         }
     }
     void esperar(){
-        System.out.println("Cacatua foi brincar com os cachorros");
+        if(barriga>0) {System.out.println("Cacatua foi brincar com os cachorros");
         barriga -= 1;
-        if(barriga<0){
+        }else if(barriga<=0){
             System.out.println("Cacatua morreu de fome, seu monstro");
         }
     }
