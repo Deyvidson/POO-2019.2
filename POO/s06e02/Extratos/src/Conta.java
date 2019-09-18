@@ -73,10 +73,18 @@ public class Conta {
 	}
 	
 	public void addOperacao(String tipo, double valor, String data){
-		this.operacoes.add(new Operacao(tipo, valor, data));	
+		this.operacoes.add(new Operacao(tipo, valor, data));		
+		if(tipo.equals("deposito")){
+			this.saldo = this.saldo + valor;
+		}if(tipo.equals("saque")){
+			this.saldo = this.saldo - valor;
+		}
 	}
 	public String toString() {
 		return "" + this.getOperacoes();
+	}	
+	public void show(){
+		System.out.println(this.saldo + " reais atualmente");
 	}
 	
 	
@@ -86,6 +94,7 @@ public class Conta {
 		bb.addOperacao("saque", 10, "31/07");
 		bb.addOperacao("saque", 5, "30/08");
 		System.out.println(bb + " ");
+		bb.show();
 	}
 	
 	
