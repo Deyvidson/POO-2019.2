@@ -39,11 +39,8 @@ class Operacao{
 	
 	public String toString() {
 		return this.tipo + ": " + this.data + ": " + this.valor + " reais";
-	}
-	
+	}	
 }
-
-
 
 public class Conta {
 	int id;
@@ -87,7 +84,6 @@ public class Conta {
 		System.out.println(this.saldo + " reais atualmente");
 	}
 	
-	
 	public static void main(String[] args) {
 		Conta bb = new Conta(10);
 		bb.addOperacao("deposito", 55, "30/07");
@@ -96,6 +92,4 @@ public class Conta {
 		System.out.println(bb + " ");
 		bb.show();
 	}
-	
-	
 }
