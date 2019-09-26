@@ -105,41 +105,48 @@ class Topic{
 	}
 	
 	public void removerPass(String nome) {
+		boolean okay = false;
 		for (int i = 0; i < this.pref.size(); i++) {
 			Passageiro x = this.pref.get(i);
+			
 			if (x != null) {
 				if(x.getNome().equals(nome)){
-					this.pref.set(i, null);
+					
+					this.pref.remove(i);
+					okay = true;
 					if(x.getNome().equals(nome)){
-						if(x == null){
+						
+
+						if(x == null){						
+
 						System.out.println("Já foi removido!");
 						return;
 						}
 					}
 				}
 			}
-			if (x == null){
-				System.out.println("Não encontrado");
-				return;
-			}
+			
 		}
 		for (int i = 0; i < this.comum.size(); i++) {
 			Passageiro y = this.comum.get(i);
+			
 			if (y != null) {
+			
 				if(y.getNome().equals(nome)){
-					this.comum.set(i, null);
+					
+					this.comum.remove(i);
+					okay = true;
 					if(y.getNome().equals(nome)){
 						if(y == null){
-						System.out.println("Já foi removido!");
+						
 						return;
 						}
 					}
 				}
-			}
-			if (y == null){
-				System.out.println("Não encontrado");
-				return;
-			}
+			}		
+		}
+		if (okay == false) {
+			System.out.println("Opa, meu bom, esse nome não tá aqui!");
 		}
 	}
 	
@@ -204,7 +211,6 @@ public class Controller {
 			}
 			else if(vet[0].equals("show")){
 				System.out.println(topic);
-				return;
 			}
         	else if(vet[0].equals("end")) {
         		System.out.println("Encerrado!");
