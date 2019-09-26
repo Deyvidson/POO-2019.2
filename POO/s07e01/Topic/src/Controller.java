@@ -75,6 +75,7 @@ class Topic{
 			}
 		}
 	}
+
 	public void inComum(int posicao, Passageiro passageiro) {
 		for(Passageiro x : comum) {
 			if(x == null) {
@@ -102,13 +103,76 @@ class Topic{
 			}
 		}
 	}
-	public void remove(String id) {
-		for(int i = 1; i <= comum.size(); i++) {
-			
+	
+	public void removerPass(String nome) {
+		for (int i = 0; i < this.pref.size(); i++) {
+			Passageiro x = this.pref.get(i);
+			if (x != null) {
+				if(x.getNome().equals(nome)){
+					this.pref.set(i, null);
+					if(x.getNome().equals(nome)){
+						if(x == null){
+						System.out.println("Já foi removido!");
+						return;
+						}
+					}
+				}
+			}
+			if (x == null){
+				System.out.println("Não encontrado");
+				return;
+			}
+		}
+		for (int i = 0; i < this.comum.size(); i++) {
+			Passageiro y = this.comum.get(i);
+			if (y != null) {
+				if(y.getNome().equals(nome)){
+					this.comum.set(i, null);
+					if(y.getNome().equals(nome)){
+						if(y == null){
+						System.out.println("Já foi removido!");
+						return;
+						}
+					}
+				}
+			}
+			if (y == null){
+				System.out.println("Não encontrado");
+				return;
+			}
 		}
 	}
 	
+
+	public String toString() {
+        String x = "[ ";
+        for (Passageiro y: this.pref) {
+            if (maxCapacidade >= preferencial) {
+                if (y != null) {
+                    x += " @" + y;
+                } else {
+                    x += " @ ";
+                }
+            }
+        }
+        for (Passageiro y : this.comum) {
+            if (maxCapacidade >= preferencial) {
+                if (y != null) {
+                    x += " = " + y;
+                } else {
+                    x += " = ";
+        
+            	}
+
+        	}
+		}
+		x += "]";
+        return x;
+	}
 }
+
+	
+
 
 public class Controller {
 
@@ -117,6 +181,7 @@ public class Controller {
         Topic topic = new Topic(0, 0);
         
         while(true) {
+			System.out.println("init, in, remove, end: ");
         	String line = scanner.nextLine();
         	String[] vet = line.split(" ");
         	
@@ -126,25 +191,30 @@ public class Controller {
         	else if(vet[0].equals("in")) {
         		int pos = 0;
         		if(Integer.parseInt(vet[2]) >= 65) {
-        			topic.inPref(pos, new Passageiro((vet[1]), Integer.parseInt(vet[2])));
+        			topic.inPref(pos, new Passageiro(vet[1], Integer.parseInt(vet[2])));
         			pos += 1;
         		}
         		else {
-        			topic.inComum(pos, new Passageiro(vet[1], Integer.parseInt(vet[1])));
+        			topic.inComum(pos, new Passageiro(vet[1], Integer.parseInt(vet[2])));
         			pos += 1;
         		}
         	}
         	else if(vet[0].equals("remove")) {
-        		topic.remove(vet[1]);
-        	}
+        		topic.removerPass(vet[1]);
+			}
+			else if(vet[0].equals("show")){
+				System.out.println(topic);
+				return;
+			}
         	else if(vet[0].equals("end")) {
         		System.out.println("Encerrado!");
         		break;
-        	}
+			}
+			
         	else {
         		System.out.println("Comando inválido!");
         	}
-        }
+		}
 	}
-
 }
+
