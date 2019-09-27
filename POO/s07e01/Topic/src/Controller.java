@@ -117,8 +117,7 @@ class Topic{
 					if(x.getNome().equals(nome)){
 						
 
-						if(x == null){						
-
+						if(x == null){
 						System.out.println("Já foi removido!");
 						return;
 						}
@@ -130,15 +129,12 @@ class Topic{
 		for (int i = 0; i < this.comum.size(); i++) {
 			Passageiro y = this.comum.get(i);
 			
-			if (y != null) {
-			
-				if(y.getNome().equals(nome)){
-					
+			if (y != null) {			
+				if(y.getNome().equals(nome)){					
 					this.comum.remove(i);
 					okay = true;
 					if(y.getNome().equals(nome)){
 						if(y == null){
-						
 						return;
 						}
 					}
