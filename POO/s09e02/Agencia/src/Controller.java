@@ -26,10 +26,14 @@ class Conta{
 	protected String tipo;
 	protected double saldo;
 	
-	public Conta(int id, String nome_cliente, double saldo) {
+	public Conta(int id, String nome_cliente, double saldo, String tipo) {
 		this.id = id;
 		this.nome_cliente = nome_cliente;
 		this.saldo = saldo;
+		this.tipo = tipo;
+	}
+	public Conta(){
+
 	}
 
 	public int getId() {
@@ -63,32 +67,23 @@ class Conta{
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
 	}
-	public void sacar(double valor) {
-		if(valor <= this.saldo) {
-			this.saldo -= valor;
-			System.out.println("Operação realizada com sucesso!");
-			System.out.println("Saldo atual: " + this.saldo);
-		}else {
-			System.out.println("Valor incompatível!");
-		}
-	}public void despositar(double valor) {
-		this.saldo += valor;
-		System.out.println("Operação realizada com sucesso!");
-		System.out.println("Saldo atual: " + this.saldo);
-	}
 }
-class Corrente extends Conta{
-	protected double tarifa = 20;  
-	
-	public Corrente(int id, String nome_cliente) {
-		super(id, nome_cliente);
+class Corrente extends Conta{	
+	public Corrente(String nome_cliente) {
+		this.setId(id);
+		this.setNome_cliente(nome_cliente);
+		this.setSaldo(saldo);
+		this.setTipo("CC");
 	}
 }
 class Poupanca extends Conta{
-	protected double rendimento = 0.01;  
-	
-	public Poupanca(int id, String nome_cliente) {
-		super(id, nome_cliente);
+
+	public Poupanca(String nome_cliente) {
+		this.setId(id);
+		this.setNome_cliente(nome_cliente);
+		this.setSaldo(saldo);
+		this.setTipo("CP");
+
 	}
 }
 class Agencia{
@@ -106,7 +101,40 @@ class Agencia{
 				return;
 			}
 		Cliente cliente = new Cliente(nome);
-		Conta poupanca = new Conta
+		Conta poupanca = new Conta(nome);
+		Conta corrente = new Conta(nome);
+		cliente.add(poupanca);
+		cliente.add(corrente);
+		this.contas.add(poupanca);
+		this.contas.add(corrente);
+		}
+	}
+	public void sacar(int indice, double valor) {
+		for(Conta x : contas){
+			if(indice == c.getId()){
+				if(valor <= this.saldo) {
+				this.saldo -= valor;
+				System.out.println("Operação realizada com sucesso!");
+				System.out.println("Saldo atual: " + c.getSaldo());
+				}else {
+				System.out.println("Valor incompatível!");
+				}
+			}
+		}
+	}public void despositar(int indice, double valor) {
+		for(Conta x : contas){
+			if(indice == c.getId()){
+				this.saldo += valor;
+				System.out.println("Operação realizada com sucesso!");
+				System.out.println("Saldo atual: " + c.getSaldo());
+			}
+		}
+	}
+	public void update(){
+		for(Conta x : contas){
+			if(c.getTipo().equals("CP")){
+				
+			}
 		}
 	}
 }
@@ -116,9 +144,9 @@ public class Controller {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		Cliente jorge = new Cliente("Jorge");
-		
+
 		while(true) {
+			System.out.println("aadCli, sacar, depositar, transferir, show, end");
 			System.out.println("add,");
 			String line = scan.nextLine();
 			String[] vet = line.split(" ");
