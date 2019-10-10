@@ -1,16 +1,15 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 class Cliente{
 	protected String nome;
 	ArrayList<Conta> contas;
-	Poupanca c_poupanca;
-	Corrente c_corrente;
 	
 	public Cliente(String nome) {
 		this.nome = nome;
-		c_poupanca = new Poupanca(1, this.nome);
-		c_corrente = new Corrente(1, this.nome);
+		
 	}
 
 	public String getNome() {
@@ -27,9 +26,10 @@ class Conta{
 	protected String tipo;
 	protected double saldo;
 	
-	public Conta(int id, String nome_cliente) {
+	public Conta(int id, String nome_cliente, double saldo) {
 		this.id = id;
 		this.nome_cliente = nome_cliente;
+		this.saldo = saldo;
 	}
 
 	public int getId() {
@@ -83,10 +83,6 @@ class Corrente extends Conta{
 	public Corrente(int id, String nome_cliente) {
 		super(id, nome_cliente);
 	}
-	
-	public void update() {
-		saldo -= tarifa;
-	}
 }
 class Poupanca extends Conta{
 	protected double rendimento = 0.01;  
@@ -94,15 +90,24 @@ class Poupanca extends Conta{
 	public Poupanca(int id, String nome_cliente) {
 		super(id, nome_cliente);
 	}
-	public void update() {
-		saldo = saldo * 0.01;
-	}
 }
 class Agencia{
 	ArrayList<Cliente> clientes;
-	
+	ArrayList<Conta> contas;
+
 	public Agencia() {
 		clientes = new ArrayList<Cliente>();
+		contas = new ArrayList<Conta>();
+	}
+	public void addCli(String nome){
+		for(Cliente x : clientes){
+			if(x.getNome().equals(nome)){
+				System.out.println("Cliente já existe!");
+				return;
+			}
+		Cliente cliente = new Cliente(nome);
+		Conta poupanca = new Conta
+		}
 	}
 }
 
@@ -117,7 +122,7 @@ public class Controller {
 			System.out.println("add,");
 			String line = scan.nextLine();
 			String[] vet = line.split(" ");
-			
+			break;
 		}
 	}
 
