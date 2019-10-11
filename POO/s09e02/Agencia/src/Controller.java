@@ -108,23 +108,23 @@ class Agencia {
     private ArrayList<Cliente> clientes;
     private ArrayList<Conta> contas;
 
-    Agencia() {
+    public Agencia() {
         clientes = new ArrayList<Cliente>();
         contas = new ArrayList<Conta>();
 
     }
 
     public void addCli(String nome) {
-        for (Cliente x : clientes) {
-            if (x.getNome().equals(nome)) {
+        for (Cliente busca : clientes) {
+            if (busca.getNome().equals(nome)) {
                 System.out.println("Cliente já existe");
                 return;
             }
         }
         Cliente cliente = new Cliente(nome);
+        this.clientes.add(cliente);
         Conta corrente = new Corrente(nome);
         Conta poupanca = new Poupanca(nome);
-        this.clientes.add(cliente);
         cliente.addConta(corrente);
         cliente.addConta(poupanca);
         this.contas.add(corrente);
@@ -132,30 +132,30 @@ class Agencia {
     }
     
     public void show() {
-        for (Conta x : contas) {
-            System.out.println(x.getId() + ":" + x.getNome() + ":" + x.getSaldo() + ":" + x.getTipo());
+        for (Conta verif : contas) {
+            System.out.println(verif.getId() + ":" + verif.getNome() + ":" + verif.getSaldo() + ":" + verif.getTipo());
         }
     }
     public void depositar(int indice, double valor){
-        for (Conta x : contas){
-            if(indice == x.getId()){
-                x.setSaldo(x.getSaldo()+valor);
+        for (Conta verif : contas){
+            if(indice == verif.getId()){
+                verif.setSaldo(verif.getSaldo()+valor);
                 return;
             }
         }
         System.out.println("Conta nem existe, parsa");
     }
     public boolean sacar(int indice, double valor){
-        for (Conta x : contas){
-            if(indice == x.getId()){
-                if(valor <= x.getSaldo()){
-                    x.setSaldo(x.getSaldo()-valor);
+        for (Conta verif : contas){
+            if(indice == verif.getId()){
+                if(valor <= verif.getSaldo()){
+                    verif.setSaldo(verif.getSaldo()-valor);
                     return true;
                 }
             }
-            else if(indice == x.getId()){
-                if(valor <= x.getSaldo()){
-                    System.out.println("Valor alto demais");
+            else if(indice == verif.getId()){
+                if(valor <= verif.getSaldo()){
+                    System.out.println("Valor alto demais, man");
                     return false;
                 }
             }
@@ -173,7 +173,7 @@ class Agencia {
             if(x.getTipo().equals("CC")){
                 x.setSaldo(x.getSaldo()-20);
             }
-            else{
+            if(x.getTipo().equals("CP")){
                 x.setSaldo(x.getSaldo()+(x.getSaldo()*0.01));
             }
         }
@@ -186,27 +186,33 @@ public class Controller {
     public static void main(String[] args) {
         Agencia agencia = new Agencia();
         Scanner scan = new Scanner(System.in);
+        
         while (true) {
-            System.out.println("addCli, sacar, depositar, transferir, update, show, end");
+            System.out.println("adicionar, sacar, depositar, transferir, update, show, end");
             String line = scan.nextLine();
             String vet[] = line.split(" ");
                 
-            if(vet[0].equals("addCli")) {
+            if(vet[0].equals("adicionar")) {
                 agencia.addCli(vet[1]);
+                System.out.println("Cliente " + vet[1] + " adicionado com sucesso!");
             }
             else if(vet[0].equals("depositar")) {
                 agencia.depositar(Integer.parseInt(vet[1]), Double.parseDouble(vet[2]));
+                System.out.println("Depósito realizado com sucesso!");
             }
             else if(vet[0].equals("sacar")) {
                 agencia.sacar(Integer.parseInt(vet[1]), Double.parseDouble(vet[2]));
+                System.out.println("Saque realizado com sucesso!");
             }
             else if(vet[0].equals("transferir")){
                 agencia.transferir(Integer.parseInt(vet[1]), Integer.parseInt(vet[2]), Double.parseDouble(vet[3]));
+                System.out.println("Transferência realizada com sucesso!");
             }
             else if(vet[0].equals("show")) {
                 agencia.show();
             }
             else if(vet[0].equals("end")) {
+                System.out.println("Encerrado!");
                 break;
             }
             else if(vet[0].equals("update")) {
