@@ -72,20 +72,25 @@ class Escola{
 	public void cadAluno(String nome) {
 		Aluno aluno = new Aluno(nome);
 		this.alunos.add(aluno);
+		System.out.println("Aluno criado");
 	}
 	
 	public void cadMat(String nome) {
 		Materia materia = new Materia(nome);
 		this.materias.add(materia);
+		System.out.println("Materia criado");
+
 	}
 	public void addAluno(String aluno, String materia) {
 		for(Aluno x : this.alunos){
-			if(aluno == x.getNomeAluno()){
+			if(aluno.equals(x.getNomeAluno())){
 				for(Materia y : this.materias){
-					if(materia == y.getNomeMat()){
+					if(materia.equals(y.getNomeMat())){
 						this.map.put(aluno , materia);
+						System.out.println("deu bom");
 						x.add_mat(materia);
 						y.add_aluno(aluno);
+						return;
 					}else{
 						System.out.println("Matéria não encontrada!");
 						return;
@@ -157,6 +162,9 @@ public class Controller {
 			else if(vet[0].equals("show")){
                 if(vet[1].equals("alunos")){
 					escola.show_aluno();
+				}
+				if(vet[1].equals("materias")){
+					escola.show_materias();
 				}
 			}
 			else if(vet[0].equals("show")){
