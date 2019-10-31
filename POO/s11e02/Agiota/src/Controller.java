@@ -4,162 +4,203 @@ import java.util.Map;
 import java.util.TreeMap;
 
 class Cliente{
+	private int id;
 	private String nome;
-	private String id;
-	private double saldoCli;
-	ArrayList<Transacao> transacaoCli;
-	
-	public Cliente(String nome) {
+	private double divida;
+	Map<Integer, Transacao> hist;
+
+	public Cliente (String nome){
+		this.id = id;
 		this.nome = nome;
-		this.saldoCli = 0;
-		transacaoCli = new ArrayList<Transacao>();
+		hist = new TreeMap<Integer, Transacao>();
 	}
-
-	public double getSaldoCli() {
-		return saldoCli;
-	}
-
-	public void setSaldoCli(double saldoCli) {
-		this.saldoCli = saldoCli;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
+	public Cliente(){
+		this.id = id;
 		this.nome = nome;
+		hist = new TreeMap<Integer, Transacao>();
 	}
-
-	public String getId() {
-		return id;
+	public int getId(){
+		return this.id;
 	}
-
-	public void setId(String id) {
+	public void setId(int id){
 		this.id = id;
 	}
-	public void addTrans(Transacao transacao) {
-		transacaoCli.add(transacao);
+	public String getNome(){
+		return this.nome;
 	}
-	
-	
+	public void setNome(String nome){
+		this.nome = nome;
+	}
+	public double getDivida(){
+		return this.divida;
+	}
+	public void setDivida(double divida){
+		this.divida = divida;
+	}
+	public Map<Integer, Transacao> getHist() {
+		return this.hist;
+	}
+	public String toString() {
+		return "" + this.getId() +  this.getNome() + ":" + this.getHist();
+	}
 }
-class Transacao{
-	private int id;
-	private double saldo;
-	Map<Cliente, double> transacao;
+
+class Transacao {
+	protected int id;
+	private String idCli;
+	private double valor;
 	
-	public Transacao(Cliente cliente, double valor) {
-		this.id = 0;
-		this.saldo = saldo;
-		transacao = new TreeMap<Cliente, double>();
+	public Transacao(int id, String idCli, double valor) {
+		this.id = id;
+		this.idCli = idCli;
+		this.valor = valor;
 	}
 	
+	public double getValor() {
+		return valor;
+	}
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
 	public int getId() {
 		return this.id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public String getIdCli() {
+		return this.idCli;
 	}
-	public void addTrans(Cliente cliente, double valor) {
-		transacao.put(cliente, valor);
+	
+	@Override
+	public String toString() {
+		return "id:" + this.getId() + " [" + this.getIdCli() + " " + this.getValor() +"]";
 	}
+	
 }
 
 class Agiota{
-	private double saldo;
-	Map<String, Cliente> map; 
-	Map<String, Transacao> hist;
+	protected double saldo;
+	private int nextId;
+	Map<String, Cliente>clientes;
+	Map<Integer, Transacao>transacoes;
 
-	public Agiota(double saldo) {
-		this.saldo = saldo;
-		map = new TreeMap<String, Cliente>();
-		hist = new TreeMap<String, Transacao>();
+	public Agiota(double valorInicial){
+		this.saldo = valorInicial;
+		clientes = new TreeMap<String, Cliente>();
+		transacoes = new TreeMap<Integer, Transacao>();
 	}
-	public Agiota() {
-		this.saldo = saldo;
-		map = new TreeMap<>();
-		hist = new TreeMap<String, Transacao>();
-	}
-	
-	public double getSaldo() {
-		return saldo;
-	}
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
-	}
-	
-	public void addCli(String id, Cliente cliente) {
-		Cliente key = map.get(id);
-		if(key == null) {
-			map.put(id, cliente);
-			hist.put(id);
-		}else {
-			throw new RuntimeException("Cliente" + " " + key + " já existe, parsa");
-		}
-	}
-	public void emprestar(String id, double valor) {
-		Cliente key = map.get(id);
-		if(key != null){
-			if(valor <= this.saldo) {
-				key.setSaldoCli(key.getSaldoCli() + valor);
-				this.saldo -= valor;
-				hist.add(0 - key);
 
-			}else {
-				System.out.println("Valor muito alto!");
-				return;
-			}
+	public double getSaldo(){
+		return this.saldo;
+	}
+	public void setSaldo(double saldo){
+		this.saldo = saldo;
+	}
+
+	public void addCli(String id, Cliente cliente){
+		Cliente cli = clientes.get(id);
+		if (cli == null) {
+			clientes.put(id, cliente);		
+		} else {
+			throw new RuntimeException("Cliente " + cliente.getId() + " já existe, parsa");
 		}
-		throw new RuntimeException("Cliente" + " " + id + " não existe, parsa");
 	}
 	public void matar(String id) {
-		Cliente key = map.get(id);
+		Cliente key = clientes.get(id);
 		if(key != null) {
-			map.remove(id);
+			clientes.remove(id);
 		}else {
 			throw new RuntimeException("Cliente" + " " + id + " não existe, parsa");			
 		}
 	}
-	public void receber(String id, double valor) {
-		Cliente key = map.get(id);
+	public void emprestar(String id, double valor){
+		Cliente key = clientes.get(id);
+		if(key != null){
+			if(valor <= this.saldo) {
+				clientes.get(id).hist.put(nextId, new Transacao(nextId, id, valor));
+				transacoes.put(nextId, new Transacao(nextId, id, valor));
+				clientes.get(id).setDivida(clientes.get(id).getDivida() + valor);
+				this.setSaldo(this.getSaldo() - valor);
+				nextId ++;
+			}else {
+				System.out.println("Valor muito alto!");
+				return;
+			}
+		}else{
+			throw new RuntimeException("Cliente" + " " + id + " não existe, parsa");
+		}
+	}
+	public void receber(String id, double valor){
+		Cliente key = clientes.get(id);
 		if(key != null) {
-			
+			clientes.get(id).hist.put(nextId, new Transacao(nextId, id, - valor));
+			transacoes.put(nextId, new Transacao(nextId, id, - valor));
+			clientes.get(id).setDivida(clientes.get(id).getDivida() - valor);
+			this.setSaldo(this.getSaldo() + valor);
+			nextId ++;
+		}else {
+			throw new RuntimeException("Cliente inexistente, meu benevolente");
 		}
-		else {
-			throw new RuntimeException("Cliente" + " " + id + " não existe, parsa");	
-		}
+	}
 
+	public void showCli(){
+		for (String id : clientes.keySet()) {
+			System.out.println(clientes.get(id).getId() + " : " + clientes.get(id).getNome() + " : " + clientes.get(id).getDivida());
+		}
+		System.out.println("Saldo atual: " + this.getSaldo());
+	}
+	public void showHist() {
+		for (int id : this.transacoes.keySet()) {
+			System.out.println(transacoes.get(id));
+		}
+	}
+
+	public Map<String, Cliente> getClientes() {
+		return clientes;
+	}
+
+	public Map<Integer, Transacao> getTransacoes() {
+		return transacoes;
+	}
 }
 
 public class Controller {
 
 	public static void main(String[] args) {
-		Sacnner scan = new Scanner(System.in);
-		Agiota agiota = new Agiota();
-		
+		Scanner scan = new Scanner(System.in);
+		Scanner x = new Scanner(System.in);
+		System.out.println("Insira um valor inicial: ");
+		double inicial = x.nextDouble();
+		Agiota agiota = new Agiota(inicial);
+
 		while(true) {
-			System.out.println("cad, emprestar, receber, matar, show, end");
+			System.out.println("addCli, emprestar, receber, matar, showCli, showHist end");
 			String line = scan.nextLine();
 			String[] vet = line.split(" ");
 			
-			if(vet[0].equals("cad")) {
+			if(vet[0].equals("addCli")) {
                 agiota.addCli(vet[1], new Cliente(vet[2]));
             }
             else if(vet[0].equals("emprestar")) {
-                agiota.emprestar(vet[1], vet[2]);
+				String v = vet[2];
+				double valor = Double.parseDouble(v);
+                agiota.emprestar(vet[1], valor);
             }
             else if(vet[0].equals("receber")) {
-                
+				String v = vet[2];
+				double valor = Double.parseDouble(v);
+                agiota.receber(vet[1], valor);
             }
-            else if(vet[0].equals("show")) {
-            	
+            else if(vet[0].equals("showCli")) {
+            	agiota.showCli();
+			}
+			else if(vet[0].equals("showHist")) {
+            	agiota.showHist();
             }
             else if(vet[0].equals("matar")) {
                agiota.matar(vet[1]);
 			}
 			else if(vet[0].equals("end")) {
-               
+			   System.out.println("Encerrado!");
+				break;
             }
             else{
                 System.out.println("Comando inválido!");
@@ -167,5 +208,4 @@ public class Controller {
 		}
 	}
 
-}
 }
