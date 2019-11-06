@@ -8,13 +8,14 @@ class Aluno {
 	ArrayList<String> materias_do_aluno;
 	
 	public Aluno(String nome){
-		this.nomeAluno = nomeAluno;
+		this.nomeAluno = nome;
+		this.materias_do_aluno = new ArrayList<String>();
 	}
 	public String getNomeAluno() {
 		return nomeAluno;
 	}
 	public void setNomeAluno(String nome) {
-		this.nomeAluno = nomeAluno;
+		this.nomeAluno = nome;
 	}	
 	public void showMat() {
 		System.out.println(this.materias_do_aluno);
@@ -25,6 +26,11 @@ class Aluno {
 	public void rem_mat(String nome){
 		this.materias_do_aluno.remove(nome);
 	}
+	@Override
+	public String toString() {
+		return this.getNomeAluno() + this.materias_do_aluno;
+	}
+
 }
 
 class Materia{
@@ -33,6 +39,7 @@ class Materia{
 	
 	public Materia(String nomeMat) {
 		this.nomeMat = nomeMat;
+		this.alunos_da_materia = new ArrayList<String>();
 	}
 	public String getNomeMat() {
 		return nomeMat;
@@ -50,23 +57,25 @@ class Materia{
 	public void rem_aluno(String nome){
 		this.alunos_da_materia.remove(nome);
 	}
-		
+	@Override
+	public String toString() {
+		return this.getNomeMat() + this.alunos_da_materia;
+	}
 }
 class Escola{
 	ArrayList<Aluno> alunos;
 	ArrayList<Materia> materias;
-	Map<String, String> map;
 	
 	public Escola(String nome) {
 		alunos = new ArrayList<Aluno>();
 		materias = new ArrayList<Materia>();
-		map = new HashMap<>();
+		
 
 	}
 	public Escola() {
 		alunos = new ArrayList<Aluno>();
 		materias = new ArrayList<Materia>();
-		map = new HashMap<>();
+		
 
 	}
 	public void cadAluno(String nome) {
@@ -86,10 +95,9 @@ class Escola{
 			if(aluno.equals(x.getNomeAluno())){
 				for(Materia y : this.materias){
 					if(materia.equals(y.getNomeMat())){
-						this.map.put(aluno , materia);
-						System.out.println("deu bom");
 						x.add_mat(materia);
 						y.add_aluno(aluno);
+						System.out.println("deu bom");
 						return;
 					}else{
 						System.out.println("Matéria não encontrada!");
@@ -103,14 +111,13 @@ class Escola{
 		}
 	}
 
-	public void removeAluno(String nomeAluno, String nomeMateria) {
+	public void desmatricular(String aluno, String materia) {
 		for(Aluno x : this.alunos) {
-			if(nomeAluno == x.getNomeAluno()) {
+			if(aluno.equals(x.getNomeAluno())) {
 				for(Materia y : this.materias){
-					if(nomeMateria == y.getNomeMat()){
-						this.map.remove(nomeAluno);
-						x.rem_mat(nomeMateria);
-						y.rem_aluno(nomeAluno);
+					if(materia.equals(y.getNomeMat())){
+						x.rem_mat(materia);
+						y.rem_aluno(aluno);
 					}else{
 						System.out.println("Matéria não encontrada!");
 						return;
@@ -123,14 +130,14 @@ class Escola{
 		}
 	}
 	public void show_aluno(){
-		for(String key : map.keySet()){
-			System.out.println(key);
+		for(Aluno x : alunos){
+			System.out.println(x);
 			return;
 		}
 	}
 	public void show_materias(){
-		for(String values : map.values()){
-			System.out.println(values);
+		for(Materia y : materias){
+			System.out.println(y);
 			return;
 		}
 	}
@@ -157,7 +164,7 @@ public class Controller {
                 escola.addAluno(vet[1], vet[2]);
             }
             else if(vet[0].equals("remover")){
-                escola.removeAluno(vet[1], vet[2]);
+                escola.desmatricular(vet[1], vet[2]);
 			}
 			else if(vet[0].equals("show")){
                 if(vet[1].equals("alunos")){
